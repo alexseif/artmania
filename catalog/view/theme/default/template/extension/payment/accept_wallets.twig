@@ -1,0 +1,44 @@
+<div class="text-center">
+	<h2 class="text-left">Please type in your Wallet phone number to continue</h2>
+	<div class="form-group col-sm-12">
+		<div class="col-sm-12">
+			<input type="number" placeholder="Phone Wallet Number ex: 01002003004" class="form-control" id="accept-wallets-phone-number">
+		</div>
+	</div>
+	<div class="form-group col-sm-12">
+		<div class="col-sm-12">
+			<span class="btn-primary btn-lg" id="accept-wallet-pay">Continue</span>
+		</div>
+	</div>
+</div>
+<script type="text/javascript"><!--
+	jQuery(document).ready(function(){
+		$('#accept-wallet-pay').click(function() {
+			var phone = $('#accept-wallets-phone-number').val();
+			if(phone){
+				var requestData = {
+					"source" : {"identifier": phone, "subtype" : "WALLET"},
+					"billing": {{accept_billing_data}},
+					"payment_token": '{{accept_billing_key}}'
+				};
+
+				$.ajax({
+				    method: "POST",
+				    contentType : 'application/json',
+				    url: 'https://accept.paymobsolutions.com/api/acceptance/payments/pay',
+				    data: JSON.stringify(requestData)
+				}).done(function(response){
+					if(response.pending == true){
+						window.location = response.redirect_url;
+					}else{
+						alert('Sorry something went wrong.');
+					}
+				}).fail(function(response){
+					console.log(response)
+				});
+			}else{
+				alert('Please type a valid phone numer.');
+			}
+		});
+	});
+//--></script>

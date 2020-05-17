@@ -1,0 +1,43 @@
+{% if has_cards %}
+<style type="text/css">
+	.accept-margin{
+		margin-top:1rem;
+		margin-bottom:2rem;
+		margin-right: auto;
+		margin-left: auto;
+	}
+</style>
+<div class="accept-margin">
+	<ul class="list-group">
+		<li class="list-group-item list-group-item-header">Welcome {{customer_name}}, you have saved cards ready to use or you may use a new card please select below.</li>
+		<li data-url="accept-iframe-new-card" class="accept-iframe-target btn-link list-group-item active"><b>Use a new card</b></li>
+	{% for iframe in iframes %}
+		<li data-url="{{iframe.card_subtype}}-{{iframe.masked_pan}}" class="accept-iframe-target btn-link list-group-item"><b>{{iframe.card_subtype}}</b>: {{ iframe.masked_pan }}</li>
+	{% endfor %}
+ 	</ul>
+ </div>
+<div class="accept-margin">
+	<div class="accept-cards-container">
+		{% for iframe in iframes %}
+			<iframe class="accept-iframe" id="{{iframe.card_subtype}}-{{iframe.masked_pan}}" src="{{ iframe.url }}" style="display:none;{{ iframe_css }}"></iframe>
+		{% endfor %}
+			<iframe class="accept-iframe" id="accept-iframe-new-card" src="{{ url }}" style="{{ iframe_css }}"></iframe>
+	</div>
+</div>
+<script type="text/javascript"><!--
+	jQuery(document).ready(function(){
+		$('.accept-iframe-target').click(function() {
+			$('.accept-iframe-target').removeClass('active');
+			$(this).addClass('active');
+			target = $(this).attr('data-url');
+			$('.accept-iframe').slideUp(750,function(){
+				$('#'+target).slideDown(750);
+			});
+		});
+	});
+//--></script>
+{% else %}
+<div class="accept-cards-container">
+	<iframe src="{{ url }}" style="{{ iframe_css }}"></iframe>
+</div>
+{% endif %}

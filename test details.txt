@@ -1,0 +1,17 @@
+Test Account Details:
+
+AccountCountryCode    			=> IN
+Account Entity                  => BOM
+Username                        => testingapi@aramex.com
+Password                        => R123456789$r
+Version                         => v1.0
+Account Number                  => 36670436
+Account Pin                     => 443543
+
+ 
+
+Scheduling pickup API URL:
+
+Shipping Services API:  http://www.aramex.com/developers/aramex-apis/42194/Shipping-Services-API
+
+ 

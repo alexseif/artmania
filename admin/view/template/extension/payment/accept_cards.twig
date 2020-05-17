@@ -1,0 +1,395 @@
+{{ header }}{{ column_left }}
+<div id="content">
+  <div class="page-header">
+    <div class="container-fluid">
+      <div class="pull-right">
+        <button type="submit" form="form-payment" data-toggle="tooltip" title="{{ button_save }}" class="btn btn-primary"><i class="fa fa-save"></i></button>
+        <a href="{{ cancel }}" data-toggle="tooltip" title="{{ button_cancel }}" class="btn btn-default"><i class="fa fa-reply"></i></a></div>
+      <h1>Accept Payments (Credit Cards)</h1>
+      <ul class="breadcrumb">
+        {% for breadcrumb in breadcrumbs %}
+        <li><a href="{{ breadcrumb.href }}">{{ breadcrumb.text }}</a></li>
+        {% endfor %}
+      </ul>
+    </div>
+  </div>
+  <div class="container-fluid">
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h3 class="panel-title"><i class="fa fa-pencil"></i> Editing Accept Payments (Credit Cards)</h3>
+      </div>
+      <div class="panel-body">
+        <form action="{{ action }}" method="post" enctype="multipart/form-data" id="form-payment" class="form-horizontal">
+          <div class="tab-content">
+            <div class="form-group">
+              <label class="col-sm-2 control-label" for="input-status">Allow Debug ?</label>
+              <div class="col-sm-10">
+                <select name="payment_accept_cards_allow_debug" id="input-status" class="form-control">
+                {% if payment_accept_cards_allow_debug %}
+                <option value="1" selected="selected">Enabled</option>
+                <option value="0">Disabled</option>
+                {% else %}
+                <option value="1">Enabled</option>
+                <option value="0" selected="selected">Disabled</option>
+                {% endif %}
+                </select>
+                <span class="help-block">Debug Shows extra data while displaying errors, (Please disable if live)</span>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="col-sm-2 control-label" for="input-status">Accept (Credit Cards) Status</label>
+              <div class="col-sm-10">
+                <select name="payment_accept_cards_status" id="input-status" class="form-control">
+                {% if payment_accept_cards_status %}
+                <option value="1" selected="selected">Enabled</option>
+                <option value="0">Disabled</option>
+                {% else %}
+                <option value="1">Enabled</option>
+                <option value="0" selected="selected">Disabled</option>
+                {% endif %}
+                </select>
+                <span class="help-block">Enable this payment method?</span>
+              </div>
+            </div>
+            <div class="form-group">
+              <div class="col-sm-12">
+                <style type="text/css">
+                  .achide,.acceptLoader.achide{display: none;}
+                  .acceptLoader{
+                    position: relative;
+                    margin: 0 auto;
+                    margin-bottom: 2.2rem;
+                    width: 75%;
+                    height: auto;
+                    min-height: 48px;
+                    line-height: 1.5em;
+                    border-radius: 2px;
+                    background-color: #323232;
+                    padding-top: 10px;
+                    padding-bottom: 10px;
+                    padding-right: 25px;
+                    padding-left: 70px;
+                    font-size: 1.1rem;
+                    font-weight: 300;
+                    color: #fff;
+                    display: -webkit-box;
+                    display: -webkit-flex;
+                    display: -ms-flexbox;
+                    display: flex;
+                    -webkit-box-align: center;
+                    -webkit-align-items: center;
+                    -ms-flex-align: center;
+                    align-items: center;
+                    -webkit-box-pack: justify;
+                    -webkit-justify-content: space-between;
+                    -ms-flex-pack: justify;
+                    justify-content: space-between;
+                    cursor: default;
+                    transition: all 750ms;
+                  }
+                  .acceptLoader svg{
+                    width: 100%;
+                    height: 100%;
+                  }
+                  .acceptLoader .error svg{
+                    fill: red;
+                  }
+                  .acceptLoader .success svg{
+                    fill: green;
+                  }
+                  .acceptLoader .success,.acceptLoader .error{
+                    position: absolute;
+                    left: 2.5%;
+                    width: 35px;
+                    height: 35px;
+                  }
+                  .spinnerac{
+                    position: absolute;
+                    left: 2.5%;
+                    transform: translateX(-50%);
+                    width: 25px;
+                    height: 25px;
+                    padding: 0;
+                    margin: 0;
+                    line-height: inherit;
+                    border-radius: 50%;
+                    border: 5px solid transparent;
+                    -webkit-animation: spin 500ms linear infinite;
+                    animation: spin 500ms linear infinite;
+                  }
+
+                  .spinnerac.default{
+                    border-top: 5px solid #01AEF0;
+                    border-bottom: 5px solid #01AEF0;
+                  }
+                  .spinnerac.green{
+                    border-top: 5px solid green;
+                    border-bottom: 5px solid green;
+                  }
+                  .spinnerac.red{
+                    border-top: 5px solid red;
+                    border-bottom: 5px solid red;
+                  }
+
+                  @-webkit-keyframes spin {
+                    0%{
+                      -webkit-transform: rotate(0deg);
+                    }
+                    100%{
+                      -webkit-transform: rotate(360deg);
+                    }
+                  }
+
+                  @keyframes spin {
+                    0%{
+                      transform: rotate(0deg);
+                    }
+                    100%{
+                      transform: rotate(360deg);
+                    }
+                  }
+                </style>
+                <div class="acceptLoader achide">
+                  <span class="spinnerac default"></span>
+                  <span class="success achide"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"> <path fill="none" d="M0 0h24v24H0V0zm0 0h24v24H0V0z"/> <path d="M16.59 7.58L10 14.17l-3.59-3.58L5 12l5 5 8-8zM12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8z"/> </svg></span>
+                  <span class="error achide"><svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="24px"height="24px" viewBox="0 0 24 24" enable-background="new 0 0 24 24" xml:space="preserve"> <g id="Bounding_Boxes"> <path opacity="0.87" fill="none" d="M0,0h24v24H0V0z"/> </g> <g id="Outline_1_"> <g> <path d="M12,2C6.47,2,2,6.47,2,12c0,5.53,4.47,10,10,10c5.53,0,10-4.47,10-10C22,6.47,17.53,2,12,2z M12,20c-4.41,0-8-3.59-8-8 s3.59-8,8-8s8,3.59,8,8S16.41,20,12,20z"/> <polygon points="15.59,7 12,10.59 8.41,7 7,8.41 10.59,12 7,15.59 8.41,17 12,13.41 15.59,17 17,15.59 13.41,12 17,8.41     "/> </g> </g> </svg></span>
+                  <span class="detail"></span>
+                </div>
+              </div>
+            </div>
+            <div class="form-group required">
+              <label class="col-sm-2 control-label" for="accept-api">API KEY</label>
+              <div class="col-sm-10">
+                <input type="text" id="accept-api" name="payment_accept_cards_api" placeholder="Enter your Accept API KEY." value="{{ payment_accept_cards_api }}" class="form-control"/>
+              </div>
+            </div>
+            <script type="text/javascript">
+              $(document).ready(function(){
+                //urls
+                var url = "{{ callback }}";
+                $('.callback_copy').click(function(ev){
+                  ev.preventDefault();
+                  var callback = document.createElement("input");
+                  document.body.appendChild(callback);
+                  callback.setAttribute("id", "callback_url_accepting");
+                  document.getElementById("callback_url_accepting").value=url;
+                  callback.select();
+                  document.execCommand("copy");
+                  document.body.removeChild(callback);
+                  document.querySelector('.acceptLoader').style.display = 'flex';
+                  $('.acceptLoader .spinnerac,.acceptLoader .error').hide();
+                  $('.acceptLoader .success').show();
+                  $('.acceptLoader .detail').append("Copied <br><span class='button-link' style='color:#03a9f4;'>"+url+"</span><br> to clipboard!<hr>");
+                  $("html, body").animate({ scrollTop: 0 }, 750);
+                });
+
+
+                function _autoLogin(){
+                  var api_key = "{{payment_accept_cards_api}}";
+                  if(api_key.length > 0){
+                    _login();
+                  }else{
+                    document.querySelector('.acceptLoader').style.display = 'flex';
+                    $('.acceptLoader .error,.acceptLoader .success').hide();
+                    $('.acceptLoader .spinnerac').show();
+                    $('.acceptLoader .detail').html('Please Enter your "API KEY", then click "Authenticate"<hr>Waiting for key..<hr>');
+                  }
+                }
+
+                $('#accept-login').click(function(){_login();});
+                _autoLogin();
+
+                function _login(){
+                  var api_key = $('#accept-api').val();
+                  if(api_key.length == 0){
+                    document.querySelector('.acceptLoader').style.display = 'flex';
+                    $('.acceptLoader .error,.acceptLoader .success').hide();
+                    $('.acceptLoader .spinnerac').show();
+                    $('.acceptLoader .detail').append('Please Enter your "API KEY"<hr>Waiting for key..<hr>');
+                  }else{
+                    document.querySelector('.acceptLoader').style.display = 'flex';
+                    $('.acceptLoader .error,.acceptLoader .success').hide();
+                    $('.acceptLoader .spinnerac').show();
+                    $('.acceptLoader .detail').append("Loading..<hr>");
+                      var details = {
+                        "api_key"   : $('#accept-api').val(),
+                      };
+                    var requestData = JSON.stringify(details);
+                    var target  = "https://accept.paymobsolutions.com/api/auth/tokens";
+                    $('.acceptLoader .detail').append("Sending API Key to Accept servers..<hr>");
+                    $.ajax({
+                      method: "POST",
+                      contentType : 'application/json',
+                      url: target,
+                      data: requestData
+                    }).done(function(response){
+                      $('#accept-merchant').val(response.profile.id);
+                      $('.acceptLoader .success,.acceptLoader .error').hide();
+                      $('.acceptLoader .spinnerac').show();
+                      $('.acceptLoader .detail').append("Servers Accepted your API Key<hr>Requesting your list of Integrations now.<hr>");
+                      _load(response.token);
+                    }).fail(function(response){
+                      console.log(response)
+                      $('.acceptLoader .spinnerac,.acceptLoader .success').hide();
+                      $('.acceptLoader .error').show();
+                      $('.acceptLoader .detail').append("Servers Refused your API Key, Please make sure you're using a valid key !<hr>");
+                    });
+                  }
+
+                }
+
+                function _load(token){
+                  // get int ids
+                  $.ajax({
+                    method: "GET",
+                    contentType : 'application/json',
+                    url: "https://accept.paymobsolutions.com/api/ecommerce/integrations?token="+token,
+                  }).done(function(response){
+                    $('#accept-int-list').html("");
+                    $.each(response.results, function (i, integration) {
+                      var type = integration.gateway_type;
+                      if(integration.gateway_type == "VPC"){
+                        type = "Card";
+                      }
+                      if(integration.gateway_type == "CAGG"){
+                        type = "Aman";
+                      }
+                      if(integration.gateway_type == "UIG"){
+                        type = "Wallet";
+                      }
+
+                      $('#accept-int-list').append($('<option>', {
+                        value: integration.id,
+                        text : integration.id+' - '+integration.currency+' - '+type
+                      }));
+                    });
+                    $('.acceptLoader .success,.acceptLoader .error').hide();
+                    $('.acceptLoader .spinnerac').show();
+                    $('.acceptLoader .detail').append(
+                      "Servers sent a list of merchant's Integrations<hr>"
+                      +"Requesting a list of Iframes now.<hr>"
+                    );
+                    // get iframes
+                    $.ajax({
+                      method: "GET",
+                      contentType : 'application/json',
+                      url: "https://accept.paymobsolutions.com/api/acceptance/iframes?token="+token,
+                    }).done(function(response){
+                      $('#accept-iframe-list').html("");
+                      $.each(response.results, function (i, iframe) {
+                        $('#accept-iframe-list').append($('<option>', {
+                          value: iframe.id,
+                          text : iframe.id
+                        }));
+                      });
+                      $('.acceptLoader .spinnerac,.acceptLoader .error').hide();
+                      $('.acceptLoader .success').show();
+                      $('.acceptLoader .detail').append(
+                        "Servers sent a list of merchant's Iframes<hr>"
+                        +"All your data has been loaded successfully!<hr>"
+                        +"Please Select Your Integration ID and Iframe ID now.<hr>"
+                        );
+                    }).fail(function(response){
+                      $('.acceptLoader .spinnerac,.acceptLoader .success').hide();
+                      $('.acceptLoader .error').show();
+                      $('.acceptLoader .detail').append("Unable to get iframe ids.<hr>");
+                    });
+                  }).fail(function(response){
+                    $('.acceptLoader .spinnerac,.acceptLoader .success').hide();
+                    $('.acceptLoader .error').show();
+                    $('.acceptLoader .detail').append("Unable to get integration ids.<hr>");
+                  });
+                }
+              });
+            </script>
+            <div class="form-group text-center">
+              <div class="col-sm-12">
+                <p><span id="accept-login" class="btn-primary btn-lg" style="cursor: pointer;">Authenticate</span></p>
+                <p>Don't have an account? <a href='https://weaccept.co/portal/register' target='_blank'>Sign up here</a></p>
+              </div>
+            </div>
+            <div class="form-group required">
+              <label class="col-sm-2 control-label" for="accept-merchant">Merchant ID</label>
+              <div class="col-sm-10">
+                <input type="text" id="accept-merchant" name="payment_accept_cards_merchant" placeholder="Enter your Accept merchant id." value="{{ payment_accept_cards_merchant }}" class="form-control"/>
+                <span class="help-block">Inset your MERCHANT ID Secret can be found <a href="https://weaccept.co/portal/settings" target="_blank">here</a>.</span>
+              </div>
+            </div>
+            <div class="form-group required">
+              <label class="col-sm-2 control-label" for="accept-hmac">HMAC Secret</label>
+              <div class="col-sm-10">
+                <input type="text" id="accept-hmac" name="payment_accept_cards_hmac" placeholder="Enter your Accept hmac." value="{{ payment_accept_cards_hmac }}" class="form-control"/>
+                <span class="help-block">Inset your HMAC SECRET can be found <a href="https://weaccept.co/portal/settings" target="_blank">here</a>.</span>
+              </div>
+            </div>
+            <div class="form-group required">
+              <label class="col-sm-2 control-label" for="accept-int">Integration ID</label>
+              <div class="col-sm-10">
+                <select name="payment_accept_cards_int" id="accept-int" class="form-control">
+                  {% if payment_accept_cards_int %}
+            <option value="{{ payment_accept_cards_int }}" selected="selected">{{ payment_accept_cards_int }}</option>
+                  {% else %}
+                    <option disabled="disabled" selected="selected"></option>
+                  {% endif %}
+                  <optgroup label="Available Integration IDs." id="accept-int-list">
+                    <option disabled="disabled">Nothing.</option>
+                  </optgroup>
+                </select>
+                <span class="help-block">Please login first and your list of Integrations will be created automatically.</span>
+              </div>
+            </div>
+            <div class="form-group required">
+              <label class="col-sm-2 control-label" for="accept-iframe">Iframe ID</label>
+              <div class="col-sm-10">
+                <select name="payment_accept_cards_iframe" id="accept-iframe" class="form-control">
+                  {% if payment_accept_cards_iframe %}
+                  <option value="{{ payment_accept_cards_iframe }}" selected="selected">{{ payment_accept_cards_iframe }}</option>
+                  {% else %}
+                    <option disabled="disabled" selected="selected"></option>
+                  {% endif %}
+                  <optgroup label="Available Iframe IDs." id="accept-iframe-list">
+                    <option disabled="disabled">Nothing.</option>
+                  </optgroup>
+                </select>
+                <span class="help-block">Please login first and your list of Iframes will be created automatically.</span>
+              </div>
+            </div>
+            <div class="form-group required">
+              <label class="col-sm-2 control-label" for="accept-method-name">Method name</label>
+              <div class="col-sm-10">
+                <input type="text" id="accept-method-name" name="payment_accept_cards_method_name" placeholder="Enter method name that will be shown at checkout." value="{{ payment_accept_cards_method_name }}" class="form-control"/>
+                <span class="help-block">This Controls what this method name will be displayed at the checkout. example Credit Cards, Aman, Phone Wallets.</span>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="col-sm-2 control-label" for="accept-iframe-css">iFrame Style (css)</label>
+              <div class="col-sm-10">
+                {% if payment_accept_cards_iframe_css %}
+                <input type="text" id="accept-iframe-css" name="payment_accept_cards_iframe_css" placeholder="Enter css to be used on the iframe." value="{{ payment_accept_cards_iframe_css }}" class="form-control"/>
+                {% else %}
+                <input type="text" id="accept-iframe-css" name="payment_accept_cards_iframe_css" placeholder="Enter css to be used on the iframe." value="width: 99%;margin: 0 auto;min-height: 97vh;border: none;" class="form-control"/>
+                {% endif %}
+                <span class="help-block">Here you may Add CSS styling to your iframe directly (Inline style) for more information about css styling please follow this <a href="https://www.w3schools.com/css/css_howto.asp" target="_blank">link</a>.<br><b>Default style is</b>: <code>width: 99%;margin: 0 auto;min-height: 97vh;border: none;</code></span>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="col-sm-2 control-label" for="input-sort-order">Sort Order</label>
+              <div class="col-sm-10">
+                <input type="text" name="payment_accept_cards_sort_order" value="{{ payment_accept_cards_sort_order }}" placeholder="Enter the order for this method" id="input-sort-order" class="form-control"/>
+                <span class="help-block">This Controls what order this method will be displayed at the checkout. example "1" this means this method will be displayed first above all other methods installed.</span>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="col-sm-2 control-label" for="input-sort-order">Callback URL</label>
+              <div class="col-sm-10">
+                <span class="callback_copy btn btn-info" id="callback_help" aria-describedby="callback_help">Copy Link</span>
+                <span id="callback_help" class="help-block">Use this link as Transaction processed &amp;Transaction response callback in your <a href="https://weaccept.co/portal/integrations" target="_blank">Payment Integrations</a>.</span>
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+{{ footer }}

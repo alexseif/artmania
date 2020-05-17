@@ -1,0 +1,2 @@
+Open folder "upload to host"
+And upload the opencart theme to "catalog/view/theme"
