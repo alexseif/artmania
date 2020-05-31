@@ -237,7 +237,7 @@ trait AcceptModel
         $data = [
             'delivery_needed'   => $delivery_needed,
             'merchant_id'       => $merchant_id,
-            'amount_cents'      => $amount_cents * 100,
+            'amount_cents'      => (int) $amount_cents * 100,
             'currency'          => $currency,
             'merchant_order_id' => $merchant_order_id,
             'items'             => $items,
@@ -248,7 +248,7 @@ trait AcceptModel
       $data = [
         'delivery_needed' => $delivery_needed,
         'merchant_id' => $merchant_id,
-        'amount_cents' => $amount_cents * 100,
+        'amount_cents' => (int) $amount_cents * 100,
         'currency' => $currency,
         'merchant_order_id' => $merchant_order_id,
         'items' => $items,
@@ -267,7 +267,7 @@ trait AcceptModel
     public function createPaymentKey($auth, $amount_cents, $order_id, $billing_data, $currency, $integration_id, $token = null)
     {
         $data = [
-            'amount_cents'   => $amount_cents * 100,
+            'amount_cents'   => (int) $amount_cents * 100,
             'expiration'     => 36000,
             'order_id'       => $order_id,
             'billing_data'   => $billing_data,

@@ -17,6 +17,7 @@ class ControllerExtensionPaymentAcceptCards extends Controller
 
         $debug              = $this->config->get('payment_accept_cards_allow_debug');
         $order              = $this->model_checkout_order->getOrder($this->session->data['order_id']);
+        $order['total']=round($order['total'], 2);
         $customer           = $this->model_account_customer->getCustomerByEmail($order['email']);
         $acceptToken        = $helper->requestToken($this->config->get('payment_accept_cards_api'));
         $integration_id     = $this->config->get('payment_accept_cards_int');
