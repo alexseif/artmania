@@ -233,6 +233,7 @@ trait AcceptModel
      */
     public function createOrder($auth, $delivery_needed, $merchant_id, $amount_cents, $currency, $merchant_order_id, $items, $shipping_data)
     {
+    if ($delivery_needed) {
         $data = [
             'delivery_needed'   => $delivery_needed,
             'merchant_id'       => $merchant_id,
@@ -242,6 +243,17 @@ trait AcceptModel
             'items'             => $items,
             'shipping_data'     => $shipping_data,
         ];
+    } else {
+
+      $data = [
+        'delivery_needed' => $delivery_needed,
+        'merchant_id' => $merchant_id,
+        'amount_cents' => $amount_cents * 100,
+        'currency' => $currency,
+        'merchant_order_id' => $merchant_order_id,
+        'items' => $items,
+      ];
+    }
 
         $order = $this->HttpPost('ecommerce/orders', $data, $auth);
 

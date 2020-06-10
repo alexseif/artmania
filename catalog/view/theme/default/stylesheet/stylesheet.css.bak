@@ -759,10 +759,23 @@ h2.price {
 .price-tax {
 display: none!important;
 }
-#menu ul.nav.navbar-nav > li:last-child:after
-    content: 'new';
-    color: #ff073a;
-    position: absolute;
-    top: 0px;
-    right: 0px;
+#menu ul.nav.navbar-nav > li:last-child:after{
+  content: 'new';
+  color: #ff073a;
+  position: absolute;
+  top: 0px;
+  right: 0px;
+}
+
+.accept-cards-container {
+  background: url(/image/loadingicon.gif) center center no-repeat;
+  min-height: 100px;
+}
+.accept-cards-container:before {
+  content: 'Contacting Payment Provider';
+  font-size: 20px;
+  font-weight: bold;
+  text-align: center;
+  display: block;
+  padding-top: 40px;
 }
