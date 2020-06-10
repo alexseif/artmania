@@ -128,7 +128,7 @@
                                   {% endif %}</td>
                                   <td class="text-left"><div>{{ product.name }}</div><input type="text" name="name" style="width:100%" value="{{ product.name }}"></td>
                                   <td class="text-left short-column "><div>{{ product.model }}</div><input type="text" name="model" value="{{ product.model }}"></td>
-                                  <td class="text-right short-column  "><div>{{ product.price }}</div><input type="text" name="price" value="{{ product.price }}"></td>
+                                  <td class="text-right short-column  "><div>{{ product.price }}</div><input type="text" name="price" value="{{ (product.price|trim('EGP'))|replace({',':''})}}"></td>
                                   <td class="text-right short-column "> <div>{{ product.special }}</div><input type="text" name="special_price" value="{{ product.special }}"></td>
 
 
@@ -201,40 +201,40 @@
                     </div>
                       <script type="text/javascript"><!--
 $('#button-filter').on('click', function () {
-      var url = 'index.php?route=catalog/product&user_token={{ user_token }}';
+                          var url = 'index.php?route=catalog/product&user_token={{ user_token }}';
 
-      var filter_name = $('input[name=\'filter_name\']').val();
+                          var filter_name = $('input[name=\'filter_name\']').val();
 
-      if (filter_name) {
-        url += '&filter_name=' + encodeURIComponent(filter_name);
-      }
+                          if (filter_name) {
+                            url += '&filter_name=' + encodeURIComponent(filter_name);
+                          }
 
-      var filter_model = $('input[name=\'filter_model\']').val();
+                          var filter_model = $('input[name=\'filter_model\']').val();
 
-      if (filter_model) {
-        url += '&filter_model=' + encodeURIComponent(filter_model);
-      }
+                          if (filter_model) {
+                            url += '&filter_model=' + encodeURIComponent(filter_model);
+                          }
 
-      var filter_price = $('input[name=\'filter_price\']').val();
+                          var filter_price = $('input[name=\'filter_price\']').val();
 
-      if (filter_price) {
-        url += '&filter_price=' + encodeURIComponent(filter_price);
-      }
+                          if (filter_price) {
+                            url += '&filter_price=' + encodeURIComponent(filter_price);
+                          }
 
-      var filter_quantity = $('input[name=\'filter_quantity\']').val();
+                          var filter_quantity = $('input[name=\'filter_quantity\']').val();
 
-      if (filter_quantity) {
-        url += '&filter_quantity=' + encodeURIComponent(filter_quantity);
-      }
+                          if (filter_quantity) {
+                            url += '&filter_quantity=' + encodeURIComponent(filter_quantity);
+                          }
 
-      var filter_status = $('select[name=\'filter_status\']').val();
+                          var filter_status = $('select[name=\'filter_status\']').val();
 
-      if (filter_status != '*') {
-        url += '&filter_status=' + encodeURIComponent(filter_status);
-      }
+                          if (filter_status != '*') {
+                            url += '&filter_status=' + encodeURIComponent(filter_status);
+                          }
 
-      location = url;
-    });
+                          location = url;
+                        });
 //--></script>
     <script type="text/javascript"><!--
         function save(row) {
